@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holy Cross School Fee Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf-autotable.umd.min.js"></script>
+<style>
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .soft-animated-bg {
+    background: linear-gradient(-45deg, #f0f9ff, #f9fafb, #ecfeff, #f5f3ff);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 30px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation-fill-mode: backwards;
+    animation-name: fadeInUp;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-out;
+  }
+  
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  
+  .bar-predicted {
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.4) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .printable-area, .printable-area * {
+      visibility: visible;
+    }
+    .printable-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 2rem;
+    }
+    .no-print {
+      display: none !important;
+    }
+  }
+
+  /* Animated background shapes */
+  @keyframes float {
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-20px) translateX(20px) rotate(45deg); }
+    50% { transform: translateY(-30px) translateX(-30px) rotate(90deg); }
+    75% { transform: translateY(20px) translateX(-20px) rotate(135deg); }
+    100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: float 20s ease-in-out infinite;
+  }
+  
+  /* Shooting Star Animation */
+  @keyframes shooting-star-anim {
+    0% {
+      transform: translateX(0) translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-120vw) translateY(120vh);
+      opacity: 0;
+    }
+  }
+
+  .shooting-star {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+    animation: shooting-star-anim 10s ease-in infinite;
+    transform-origin: top left;
+    transform: rotate(-30deg);
+  }
+
+  /* Animated Input Underline */
+  .input-anim-container {
+    position: relative;
+    padding-top: 1.5rem;
+  }
+  .input-anim-container .input-field {
+    border: 0;
+    border-bottom: 2px solid #e2e8f0;
+    outline: 0;
+    font-size: 1rem;
+    color: #1e293b;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .input-anim-container .input-field::placeholder {
+    color: transparent;
+  }
+
+  .input-anim-container .input-label {
+    position: absolute;
+    top: 2.25rem;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #64748b;
+    pointer-events: none;
+  }
+
+  .input-anim-container .input-field:focus {
+    padding-bottom: 8px;
+    border-width: 2px;
+    border-image-slice: 1;
+  }
+  
+  .input-anim-container .input-field:focus ~ .input-label,
+  .input-anim-container .input-field:not(:placeholder-shown) ~ .input-label {
+    position: absolute;
+    top: 0.25rem;
+    display: block;
+    transition: 0.2s;
+    font-size: 0.875rem;
+  }
+
+  .input-field-student:focus ~ .input-label { color: #06b6d4; }
+  .input-field-student:focus { border-image-source: linear-gradient(to right, #22d3ee, #06b6d4); }
+  
+  .input-field-admin:focus ~ .input-label { color: #6366f1; }
+  .input-field-admin:focus { border-image-source: linear-gradient(to right, #818cf8, #6366f1); }
+  
+</style>
+</head>
+  <body class="bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
